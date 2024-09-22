@@ -27,7 +27,8 @@ If any new libraries are added to the env
 ```
 
 ## Dataset
-The dataset will not be present in this repository, you must download it into the ```./data/``` folder. You must create it<br>
+To store the dataset you must create a folder in the root of this repository called ```data```<br>
+The dataset will not be present in this repository, you must download it into the ```./data``` folder.<br>
 The dataset is available at Kaggle.com in the [competition page](https://www.kaggle.com/competitions/machine-learning-nova-2024-the-three-body-proble/data)
 
 ### Kaggle token
@@ -59,9 +60,9 @@ unzip [dataset.zip]
 ```
 
 ### Alternative methods
-Just download and place the data into the ```./data/``` folder, using the Download All option in the Data section of the kaggle competion.
+Just download and place the data into the ```./data``` folder, using the Download All option in the Data section of the kaggle competion.
 
-### Structure of the data folder
+### Structure of the ```./data``` folder
 ```
 .
 ├── mlNOVA
