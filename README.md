@@ -62,7 +62,8 @@ unzip [dataset.zip]
 Just download and place the data into the dataset folder, using the Download All option in the Data section of the kaggle competion.
 
 ### Structure of the data folder
-````
+
+```
 .
 ├── mlNOVA
 │   └── mlNOVA
