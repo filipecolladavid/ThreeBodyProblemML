@@ -11,8 +11,10 @@ Repository for the first assignment of Machine Learning Course
 
 ## Usage:
 ```bash
-# Create a virtual env 
+# Create a virtual env for unix and linux
 $ python3 -m venv venv
+# Create a virtual env for windows
+$ py -3 -m venv .venv  
 # Activate the virtual env (use tab to autocomplete)
 $ source venv/bin/activate
 # Install the requirements
