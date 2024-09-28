@@ -177,3 +177,7 @@ pyrightconfig.json
 
 # Ignores the data folver
 data/
+
+# Ignoring .pdf and .csv files
+.csv
+.pdf
