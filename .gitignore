@@ -179,5 +179,5 @@ pyrightconfig.json
 data/
 
 # Ignoring .pdf and .csv files
-.csv
-.pdf
+*.csv
+*.pdf
