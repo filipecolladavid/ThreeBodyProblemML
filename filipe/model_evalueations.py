@@ -84,6 +84,14 @@ X_train, X_val, y_train, y_val,  = custom_train_test_split(X_train, y_train, dro
 print(X_train.shape)
 print(y_train.shape)
 
-# Split the sampled data into training and validation sets
+# Standard regressor
 best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10)) 
+print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
+
+# Ridge
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Ridge()) 
+print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
+
+# Lasso
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Lasso()) 
 print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
