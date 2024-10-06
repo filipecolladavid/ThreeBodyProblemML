@@ -122,8 +122,6 @@ def validate_poly_regression(X_train: pd.DataFrame,
     best_model = None
     best_degree = None
 
-    # Take just 1% of the data
-
     for degree in degrees:
         # Create a pipeline with polynomial features and the given regressor
         pipeline = Pipeline([
@@ -135,6 +133,8 @@ def validate_poly_regression(X_train: pd.DataFrame,
         # Fit the pipeline on the training data
         print("Fitting the model")
         pipeline.fit(X_train, y_train)
+        y_pred_train = pipeline.predict(X_train)
+        print("rmse for training: "+str(np.sqrt(mean_squared_error(y_train, y_pred_train))))
 
         # Predict on the validation data
         print("Preddicting the model")

@@ -78,22 +78,12 @@ evaluate_model(pipeline, X_train, X_val, y_train, y_val)
 
 # Polynomial Regressions
 
-unique_ids = X['trajectory_id'].unique()
-
-# Calculate 1% of the dataset
-n_1_percent = max(1, int(len(unique_ids) * 0.01))
-
-sampled_ids = X['trajectory_id'].drop_duplicates().sample(n=n_1_percent).tolist()
-print(sampled_ids)
-
-# Select the 1% by maintaining the same trajectory_id
-X_sampled = X[X['trajectory_id'].isin(sampled_ids)]
-y_sampled = y[y['trajectory_id'].isin(sampled_ids)]
-
-print(X_sampled.shape)
-print(y_sampled.shape)
+# Get one percent of data - too many features cannot be fitted 
+X_train, _, y_train, _  = custom_train_test_split(X, y, 0.99, False)
+X_train, X_val, y_train, y_val,  = custom_train_test_split(X_train, y_train, drop=True, columns_to_drop=['v_x_1', 'v_y_1', 'v_x_2', 'v_y_2', 'v_x_3', 'v_y_3'])
+print(X_train.shape)
+print(y_train.shape)
 
 # Split the sampled data into training and validation sets
-X_train, X_val, y_train, y_val = train_test_split(X_sampled, y_sampled, test_size=0.2)
-best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val) 
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10)) 
 print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
