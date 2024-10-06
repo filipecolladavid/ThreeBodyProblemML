@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import PolynomialFeatures
-from model_utils import custom_train_test_split, evaluate_model
+from model_utils import custom_train_test_split, evaluate_model, validate_poly_regression
 
 df = pd.read_csv("../data/mlNOVA/mlNOVA/X_train.csv")
 
@@ -46,8 +46,8 @@ y_test.drop(columns=['trajectory_id', 'Id'])
 X = X_train_val
 y = y_train_val
 
-print(X)
-print(y)
+# print(X)
+# print(y)
 
 
 # Test multiple linear regressions
@@ -76,4 +76,24 @@ pipeline = Pipeline([
 ])
 evaluate_model(pipeline, X_train, X_val, y_train, y_val)
 
-print()
+# Polynomial Regressions
+
+unique_ids = X['trajectory_id'].unique()
+
+# Calculate 1% of the dataset
+n_1_percent = max(1, int(len(unique_ids) * 0.01))
+
+sampled_ids = X['trajectory_id'].drop_duplicates().sample(n=n_1_percent).tolist()
+print(sampled_ids)
+
+# Select the 1% by maintaining the same trajectory_id
+X_sampled = X[X['trajectory_id'].isin(sampled_ids)]
+y_sampled = y[y['trajectory_id'].isin(sampled_ids)]
+
+print(X_sampled.shape)
+print(y_sampled.shape)
+
+# Split the sampled data into training and validation sets
+X_train, X_val, y_train, y_val = train_test_split(X_sampled, y_sampled, test_size=0.2)
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val) 
+print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
