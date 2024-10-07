@@ -1,13 +1,8 @@
 # Reading the data
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import PolynomialFeatures
 from model_utils import custom_train_test_split, evaluate_model, validate_poly_regression
 
 df = pd.read_csv("../data/mlNOVA/mlNOVA/X_train.csv")
@@ -46,10 +41,6 @@ y_test.drop(columns=['trajectory_id', 'Id'])
 X = X_train_val
 y = y_train_val
 
-# print(X)
-# print(y)
-
-
 # Test multiple linear regressions
 print("Normal linear regression")
 X_train, X_val, y_train, y_val = custom_train_test_split(X,y)
@@ -85,13 +76,13 @@ print(X_train.shape)
 print(y_train.shape)
 
 # Standard regressor
-best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10)) 
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), plot=True) 
 print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
 
-# Ridge
-best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Ridge()) 
-print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
+# # Ridge
+# best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Ridge()) 
+# print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
 
-# Lasso
-best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Lasso()) 
-print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
+# # Lasso
+# best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Lasso()) 
+# print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
