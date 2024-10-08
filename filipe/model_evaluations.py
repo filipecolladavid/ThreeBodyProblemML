@@ -3,12 +3,11 @@ import pandas as pd
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.pipeline import Pipeline
-from model_utils import custom_train_test_split, evaluate_model, validate_poly_regression
+from model_utils import custom_train_test_split, train_evaluate_model, validate_poly_regression
 
 df = pd.read_csv("../data/mlNOVA/mlNOVA/X_train.csv")
 
 # Cleaning the data
-
 # Create the trajectory_id column
 df['trajectory_id'] = df['Id'] // 257
 # Filter out rows where all columns except 'Id' and trajectory_Id are zero
@@ -28,9 +27,11 @@ X_raw = df_filtered[['t', 'trajectory_id', 'Id']].merge(
 )
 # Reorder the columns
 X_raw = X_raw[['t', 'x_1', 'y_1', 'v_x_1', 'v_y_1', 'x_2', 'y_2', 'v_x_2', 'v_y_2', 'x_3', 'y_3', 'v_x_3', 'v_y_3', 'Id', 'trajectory_id']]
+print(X_raw)
 
 # Target
 Y_raw = df_filtered[['x_1', 'y_1', 'v_x_1', 'v_y_1', 'x_2', 'y_2', 'v_x_2', 'v_y_2', 'x_3', 'y_3', 'v_x_3', 'v_y_3', 'Id', 'trajectory_id']]
+print(Y_raw)
 
 # Permanent test data
 # First, remove 10% of the data to use as a fixed test set
@@ -41,31 +42,31 @@ y_test.drop(columns=['trajectory_id', 'Id'])
 X = X_train_val
 y = y_train_val
 
-# Test multiple linear regressions
+# Test multiple linear regressions - 
 print("Normal linear regression")
-X_train, X_val, y_train, y_val = custom_train_test_split(X,y)
+X_train, X_val, y_train, y_val = custom_train_test_split(X, y, drop=True, columns_to_drop=['v_x_1', 'v_y_1', 'v_x_2', 'v_y_2', 'v_x_3', 'v_y_3'])
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('regressor', LinearRegression()) 
 ])
-evaluate_model(pipeline, X_train, X_val, y_train, y_val)
+train_evaluate_model(pipeline, X_train, X_val, y_train, y_val)
 
 print()
 
-print("Regularization")
+print("Regularizations")
 print("Ridge regression")
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('regressor', Ridge(alpha=10))
 ])
-evaluate_model(pipeline, X_train, X_val, y_train, y_val)
+train_evaluate_model(pipeline, X_train, X_val, y_train, y_val)
 
 print("Lasso regression")
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('regressor', Lasso(alpha=5))
 ])
-evaluate_model(pipeline, X_train, X_val, y_train, y_val)
+train_evaluate_model(pipeline, X_train, X_val, y_train, y_val)
 
 # Polynomial Regressions
 
@@ -79,10 +80,10 @@ print(y_train.shape)
 best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), plot=True) 
 print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
 
-# # Ridge
-# best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Ridge()) 
-# print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
+# Ridge
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Ridge()) 
+print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
 
-# # Lasso
-# best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Lasso()) 
-# print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
+# Lasso
+best_model, best_rmse = validate_poly_regression(X_train, y_train, X_val, y_val, degrees=range(1,10), regressor=Lasso()) 
+print(f"Best model: {best_model}, Best RMSE: {best_rmse}")
