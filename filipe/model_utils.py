@@ -56,6 +56,7 @@ def custom_train_test_split(X, y, test_size=0.2, drop=True, columns_to_drop=[]):
             - y_train (pd.DataFrame): The training set of the target dataset.
             - y_test (pd.DataFrame): The testing set of the target dataset.
     """
+    print(test_size)
     # Get unique trajectory_ids
     unique_ids = X['trajectory_id'].unique()
     
