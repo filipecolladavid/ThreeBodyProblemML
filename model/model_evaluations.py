@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.pipeline import Pipeline
 from model_utils import custom_train_test_split, train_evaluate_model, validate_poly_regression
 
-df = pd.read_csv("../data/mlNOVA/mlNOVA/X_train.csv")
+df = pd.read_csv("C:/Users/Diogo Almeida/Desktop/AA_three-body_problem/data/mlNOVA/mlNOVA/X_train.csv")
 
 # Cleaning the data
 # Create the trajectory_id column
